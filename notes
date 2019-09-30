@@ -1,0 +1,50 @@
+big end
+  most significant byte is at the end
+  if we have 4 byte number say 1
+  in big endian system will store 1 this way:
+        \x00\x00\x00\x01    <--- notice we start here
+         in little endian
+notice here -->     \x01\x00\x00\x00
+
+
+
+
+
+def handlep2(self,filePath,binFile):
+  with open(filePath) as p2File:
+    data = p2File.read().rstrip().split('\n')
+    header = False
+    for index,d in enumerate(data):
+      if typeOfData(d) == "unnecessary":
+        header = True
+      elif header:
+        header = False
+      else:
+        image=np.array(data[index+1:]).astype('uint8')
+        image=np.where(image==255,0,1)
+        print(image.reshape(32,32))
+        self.writeTo(binFile,image)
+        break
+def handlep5(self,filePath,binFile):
+  with open(filePath,"rb") as f:
+    fileData     = f.read(-1).decode('utf-8').split("\n")
+    humanData = fileData[:-1]
+    image = np.fromstring(fileData[-1],dtype='uint8')
+    image = np.where(image==0,1,0)
+    self.writeTo(binFile,image.tobytes())
+    print(image.reshape(32,32))
+def handlep1(self,filePath,binFile):
+  with open(filePath) as p2File:
+    data = p2File.read().rstrip().split('\n')
+    header = False
+    pcount = 0
+    for index,d in enumerate(data):
+      if typeOfData(d) == "unnecessary":
+        header = True
+      elif header:
+        self.imageCount += 1
+        header = False
+      else:
+        image = np.array(list(''.join(data[index:]))).astype('uint8')
+        self.writeTo(binFile,image.tobytes())
+        break

@@ -1,4 +1,4 @@
-# Machine Learning Alphabet
+# Machine Learning Numset
 Working with MNIST dataset of hand written images can be found [HERE](http://yann.lecun.com/exdb/mnist/)
 ## Technologies Used:
 * Numpy 
